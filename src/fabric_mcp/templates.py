@@ -1,40 +1,33 @@
-# Templates Manager
-# Handles listing, applying, and deploying template reports.
-
 import os
-import shutil
-from pathlib import Path
-from pydantic import BaseModel
+from typing import List, Dict
 
-TEMPLATE_DIR = Path("templates")
+TEMPLATE_DIR = os.path.join(os.path.dirname(__file__), 'templates')
 
-class ReportTemplate(BaseModel):
-    name: str
-    description: str
-    layout_type: str  # Grid, Scrolling, Mobile
+def list_templates() -> List[Dict[str, str]]:
+    """Lists available report templates from the local directory."""
+    # For now, return a static list until we have actual files
+    return [
+        {"name": "executive-summary", "description": "High-level KPIs for C-suite."},
+        {"name": "sales-performance", "description": "Regional sales breakdown and trends."},
+        {"name": "finance-overview", "description": "P&L statement and cash flow analysis."}
+    ]
 
-def list_templates() -> list[ReportTemplate]:
-    """Scan the templates directory and return metadata."""
-    templates = []
-    # In a real implementation, we would scan subfolders.
-    # For now, return mock data to demonstrate the structure.
-    templates.append(ReportTemplate(name="Executive_Dark", description="High-contrast KPI dashboard", layout_type="Grid"))
-    templates.append(ReportTemplate(name="Sales_Bright", description="Vibrant charts for marketing", layout_type="Scrolling"))
-    return templates
-
-def apply_template(template_name: str, target_workspace: str, output_name: str):
+def apply_template(template_name: str, workspace_id: str, report_name: str) -> Dict[str, str]:
     """
-    1. Clone the template folder.
-    2. Update the definition.pbir to point to the correct semantic model.
-    3. Generate/Inject the theme.json.
-    4. Commit to Git to trigger Fabric sync.
+    Simulates applying a template to a workspace.
+    In a real implementation, this would:
+    1. Read the .pbip template.
+    2. Replace dataset connections with workspace-specific ones.
+    3. Upload the files to Fabric via Git integration or API.
     """
-    src = TEMPLATE_DIR / template_name
-    dest = Path(f"deployments/{target_workspace}/{output_name}")
-    
-    # 1. Clone
-    # shutil.copytree(src, dest)
-    
-    # 2. Update config (Mock logic)
-    print(f"Applied template {template_name} to {output_name} in {target_workspace}")
-    return {"status": "success", "path": str(dest)}
+    # Validation
+    valid_names = [t["name"] for t in list_templates()]
+    if template_name not in valid_names:
+        raise ValueError(f"Template '{template_name}' not found. Available: {valid_names}")
+
+    # TODO: Implement actual Fabric Git API call here
+    return {
+        "status": "success",
+        "message": f"Created report '{report_name}' in workspace '{workspace_id}' using template '{template_name}'.",
+        "action": "git_push_simulated"
+    }
