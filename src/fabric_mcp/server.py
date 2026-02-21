@@ -7,10 +7,27 @@ from pydantic import BaseModel, Field
 
 import fabric_mcp.templates as templates
 import fabric_mcp.theme_generator as themes
+import fabric_mcp.fabric_api as fabric_api
 
 server = Server("fabric-mcp")
 
 # Define tools
+@server.tool()
+async def list_workspaces() -> list[TextContent]:
+    """List all Microsoft Fabric workspaces available to the user."""
+    try:
+        workspaces = fabric_api.client.list_workspaces()
+        # Format the output as a readable string
+        result_text = "Found Workspaces:\n"
+        for ws in workspaces:
+            result_text += f"- {ws.get('displayName')} (ID: {ws.get('id')})\n"
+            if ws.get('description'):
+                result_text += f"  Description: {ws.get('description')}\n"
+        
+        return [TextContent(type="text", text=result_text)]
+    except Exception as e:
+        return [TextContent(type="text", text=f"Error listing workspaces: {str(e)}")]
+
 @server.tool()
 async def list_templates() -> list[TextContent]:
     """List available report templates (e.g., Executive, Sales)."""
