@@ -29,6 +29,23 @@ async def list_workspaces() -> list[TextContent]:
         return [TextContent(type="text", text=f"Error listing workspaces: {str(e)}")]
 
 @server.tool()
+async def sync_workspace(workspace_id: str) -> TextContent:
+    """
+    Trigger a 'Update from Git' sync for a specific workspace.
+    This pulls the latest report definitions from the connected Git branch.
+    """
+    try:
+        # We don't specify a commit hash to pull the HEAD of the connected branch
+        result = fabric_api.client.update_workspace_from_git(workspace_id)
+        operation_id = result.get("operationId", "unknown")
+        return TextContent(
+            type="text", 
+            text=f"Sync started successfully.\nOperation ID: {operation_id}\nStatus: {result.get('status', 'InProgress')}"
+        )
+    except Exception as e:
+        return TextContent(type="text", text=f"Error syncing workspace: {str(e)}")
+
+@server.tool()
 async def list_templates() -> list[TextContent]:
     """List available report templates (e.g., Executive, Sales)."""
     t = templates.list_templates()
