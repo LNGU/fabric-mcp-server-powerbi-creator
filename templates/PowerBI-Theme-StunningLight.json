@@ -1,0 +1,62 @@
+{
+  "name": "Stunning Clean Light",
+  "dataColors": [
+    "#2563EB", 
+    "#7C3AED", 
+    "#DB2777", 
+    "#EA580C", 
+    "#16A34A", 
+    "#0891B2", 
+    "#4F46E5", 
+    "#D946EF"
+  ],
+  "background": "#F3F4F6",
+  "foreground": "#1F2937",
+  "tableAccent": "#2563EB",
+  "visualStyles": {
+    "*": {
+      "*": {
+        "*": [
+          {
+            "fontSize": 10,
+            "fontFamily": "Segoe UI",
+            "color": { "solid": { "color": "#374151" } }
+          }
+        ],
+        "background": [
+          {
+            "show": true,
+            "color": { "solid": { "color": "#FFFFFF" } },
+            "transparency": 0
+          }
+        ],
+        "border": [
+          {
+            "show": true,
+            "radius": 8,
+            "color": { "solid": { "color": "#E5E7EB" } }
+          }
+        ],
+        "dropShadow": [
+          {
+            "show": true,
+            "color": { "solid": { "color": "#9CA3AF" } },
+            "position": "Outer",
+            "preset": "BottomRight",
+            "blur": 10
+          }
+        ]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [
+          {
+            "color": { "solid": { "color": "#F3F4F6" } },
+            "transparency": 0
+          }
+        ]
+      }
+    }
+  }
+}

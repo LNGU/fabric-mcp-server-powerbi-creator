@@ -1,0 +1,61 @@
+{
+  "name": "Stunning Dark Neon",
+  "dataColors": [
+    "#00E5FF", 
+    "#76FF03", 
+    "#FFD600", 
+    "#FF4081", 
+    "#D500F9", 
+    "#2979FF", 
+    "#1DE9B6", 
+    "#FF9100"
+  ],
+  "background": "#0A0A0A",
+  "foreground": "#FFFFFF",
+  "tableAccent": "#00E5FF",
+  "visualStyles": {
+    "*": {
+      "*": {
+        "*": [
+          {
+            "fontSize": 10,
+            "fontFamily": "Segoe UI",
+            "color": { "solid": { "color": "#E0E0E0" } }
+          }
+        ],
+        "background": [
+          {
+            "show": true,
+            "color": { "solid": { "color": "#1E1E1E" } },
+            "transparency": 5
+          }
+        ],
+        "border": [
+          {
+            "show": true,
+            "radius": 10,
+            "color": { "solid": { "color": "#333333" } }
+          }
+        ],
+        "dropShadow": [
+          {
+            "show": true,
+            "color": { "solid": { "color": "#000000" } },
+            "position": "Outer",
+            "preset": "BottomRight"
+          }
+        ]
+      }
+    },
+    "page": {
+      "*": {
+        "background": [
+          {
+            "color": { "solid": { "color": "#0A0A0A" } },
+            "transparency": 0
+          }
+        ]
+      }
+    }
+  }
+}
