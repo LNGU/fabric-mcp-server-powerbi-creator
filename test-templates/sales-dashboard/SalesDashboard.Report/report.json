@@ -1,0 +1,62 @@
+{
+  "config": "{\"version\":\"5.51\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU08\"}}}",
+  "layoutOptimization": 0,
+  "sections": [
+    {
+      "name": "ReportSection",
+      "displayName": "Sales Overview",
+      "width": 1280,
+      "height": 720,
+      "visualContainers": [
+        {
+          "x": 20,
+          "y": 20,
+          "z": 1000,
+          "width": 280,
+          "height": 140,
+          "config": "{\"name\":\"card_revenue\",\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Sum(Revenue)\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Total Revenue'\"}}}}}]}}}"
+        },
+        {
+          "x": 320,
+          "y": 20,
+          "z": 1001,
+          "width": 280,
+          "height": 140,
+          "config": "{\"name\":\"card_profit\",\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Sum(Profit)\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Total Profit'\"}}}}}]}}}"
+        },
+        {
+          "x": 620,
+          "y": 20,
+          "z": 1002,
+          "width": 280,
+          "height": 140,
+          "config": "{\"name\":\"card_quantity\",\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Sum(Quantity)\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Total Units Sold'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 180,
+          "z": 1003,
+          "width": 600,
+          "height": 300,
+          "config": "{\"name\":\"chart_region\",\"singleVisual\":{\"visualType\":\"clusteredBarChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Region\"}],\"Y\":[{\"queryRef\":\"Sum(SalesAmount)\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Sales by Region'\"}}}}}]}}}"
+        },
+        {
+          "x": 640,
+          "y": 180,
+          "z": 1004,
+          "width": 600,
+          "height": 300,
+          "config": "{\"name\":\"chart_trend\",\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Date\"}],\"Y\":[{\"queryRef\":\"Sum(Revenue)\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Revenue Trend'\"}}}}}]}}}"
+        },
+        {
+          "x": 20,
+          "y": 500,
+          "z": 1005,
+          "width": 1220,
+          "height": 200,
+          "config": "{\"name\":\"table_details\",\"singleVisual\":{\"visualType\":\"tableEx\",\"projections\":{\"Values\":[{\"queryRef\":\"Product\"},{\"queryRef\":\"Region\"},{\"queryRef\":\"Sum(SalesAmount)\"},{\"queryRef\":\"Sum(Quantity)\"}]},\"vcObjects\":{\"title\":[{\"properties\":{\"text\":{\"expr\":{\"Literal\":{\"Value\":\"'Sales Details'\"}}}}}]}}}"
+        }
+      ]
+    }
+  ]
+}

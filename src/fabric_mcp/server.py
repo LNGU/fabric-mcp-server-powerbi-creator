@@ -5,7 +5,6 @@ from mcp.server import Server, Notification
 from mcp.types import Tool, TextContent
 from pydantic import BaseModel, Field
 
-import fabric_mcp.templates as templates
 import fabric_mcp.theme_generator as themes
 import fabric_mcp.fabric_api as fabric_api
 
@@ -46,26 +45,82 @@ async def sync_workspace(workspace_id: str) -> TextContent:
         return TextContent(type="text", text=f"Error syncing workspace: {str(e)}")
 
 @server.tool()
-async def list_templates() -> list[TextContent]:
-    """List available report templates (e.g., Executive, Sales)."""
-    t = templates.list_templates()
-    return [TextContent(type="text", text=str(t))]
-
-@server.tool()
-async def apply_template(template_name: str, destination_path: str, report_name: str) -> TextContent:
+async def connect_workspace_to_git(
+    workspace_id: str,
+    git_provider: str,
+    organization: str,
+    project: str,
+    repository: str,
+    branch: str = "main",
+    folder: str = "/"
+) -> TextContent:
     """
-    Create a new report in a local directory using a template.
+    Connect a workspace to a Git repository containing Power BI templates or reports.
+    
+    After connection, use sync_workspace() to pull content into the workspace.
     
     Args:
-        template_name: ID of the template to use (from list_templates)
-        destination_path: Local path to your Fabric Git repo
-        report_name: Name of the new report folder to create
+        workspace_id: The Fabric workspace ID
+        git_provider: "AzureDevOps" or "GitHub"
+        organization: Git organization/account name
+        project: Project name (Azure DevOps) or repository owner (GitHub)
+        repository: Repository name
+        branch: Git branch name (default: "main")
+        folder: Subfolder path in the repo (default: "/")
+    
+    Example:
+        For GitHub: organization="yourorg", project="yourorg", repository="powerbi-templates"
+        For Azure DevOps: organization="yourorg", project="YourProject", repository="powerbi-templates"
     """
     try:
-        result = templates.apply_template(template_name, destination_path, report_name)
-        return TextContent(type="text", text=str(result))
+        result = fabric_api.client.connect_workspace_to_git(
+            workspace_id=workspace_id,
+            git_provider_type=git_provider,
+            organization_name=organization,
+            project_name=project,
+            repository_name=repository,
+            branch_name=branch,
+            directory_name=folder
+        )
+        return TextContent(
+            type="text",
+            text=f"Workspace connected to Git successfully!\nProvider: {git_provider}\nRepository: {organization}/{repository}\nBranch: {branch}\nFolder: {folder}\n\nNext step: Use sync_workspace() to pull content from Git."
+        )
     except Exception as e:
-        return TextContent(type="text", text=f"Error applying template: {str(e)}")
+        return TextContent(type="text", text=f"Error connecting workspace to Git: {str(e)}")
+
+@server.tool()
+async def get_git_status(workspace_id: str) -> TextContent:
+    """
+    Check Git sync status for a workspace.
+    Shows connected repository and any pending changes.
+    """
+    try:
+        status = fabric_api.client.get_workspace_git_status(workspace_id)
+        
+        # Format the status information
+        result_text = "Git Status:\n"
+        result_text += f"Connected: {status.get('isGitConnected', False)}\n"
+        
+        if status.get('isGitConnected'):
+            git_info = status.get('gitProviderDetails', {})
+            result_text += f"Provider: {git_info.get('gitProviderType')}\n"
+            result_text += f"Repository: {git_info.get('organizationName')}/{git_info.get('repositoryName')}\n"
+            result_text += f"Branch: {git_info.get('branchName')}\n"
+            result_text += f"Folder: {git_info.get('directoryName')}\n\n"
+            
+            # Show pending changes if any
+            changes = status.get('workspaceHead', {}).get('changes', [])
+            if changes:
+                result_text += f"Pending Changes: {len(changes)}\n"
+                for change in changes[:5]:  # Show first 5
+                    result_text += f"  - {change.get('path')} ({change.get('type')})\n"
+            else:
+                result_text += "No pending changes\n"
+        
+        return TextContent(type="text", text=result_text)
+    except Exception as e:
+        return TextContent(type="text", text=f"Error getting Git status: {str(e)}")
 
 @server.tool()
 async def generate_theme(name: str, bg_color: str, text_color: str) -> TextContent:

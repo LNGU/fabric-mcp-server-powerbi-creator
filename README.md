@@ -1,31 +1,32 @@
-# Fabric MCP Server - Power BI Creator 🚀
+# Fabric MCP Server 🚀
 
-A **Model Context Protocol (MCP)** server for Microsoft Fabric and Power BI. This tool empowers AI agents (like Claude, Cursor, OpenClaw) to manage Fabric workspaces, automate deployments via Git, and generate Power BI reports from templates.
+A **Model Context Protocol (MCP)** server for Microsoft Fabric workspace management and automation. This tool empowers AI agents (like Claude, Cursor, Cline) to manage Fabric workspaces, automate Git-based deployments, and generate Power BI themes.
 
-## 🌟 Why this exists?
+## 🌟 Why This Exists
 
-**Stop building Power BI reports manually.** 
+**Automate Microsoft Fabric operations from your AI agent.**
 
-Microsoft Fabric has powerful Git integration, but creating reports usually involves dragging visuals in Power BI Desktop.
-**Fabric MCP Server** transforms this into an **Infrastructure-as-Code (IaC)** workflow for BI.
+Microsoft Fabric has powerful Git integration for version control, but managing workspaces and triggering deployments typically requires manual actions in the web portal or scripting.
 
-Instead of manual clicks, you can tell your AI agent:
-> *"Generate a Sales Dashboard for Q3."*
-> *"Deploy the Finance report to Prod and refresh the dataset."*
-> *"Apply the Dark Executive theme to all reports in Workspace X."*
+**Fabric MCP Server** transforms this into an **AI-agent-friendly workflow**:
 
-This eliminates manual `.pbix` creation and ensures every report is:
-*   **Versioned:** Tracked in Git.
-*   **Consistent:** Built from standard templates.
-*   **Automated:** Deployed via CI/CD pipelines.
+Instead of manual portal clicks, tell your AI agent:
+> *"List all workspaces in our tenant."*
+> *"Deploy the latest changes from Git to the Production workspace."*
+> *"Generate a dark theme with our brand colors: #00B8D4 and #FF6F00."*
+
+This enables:
+*   **Automation:** AI agents can manage Fabric workspaces programmatically
+*   **Git-based deployments:** Trigger `updateFromGit` to deploy from connected branches
+*   **Version control:** All changes tracked in Git
+*   **Theme generation:** Dynamically create Power BI themes from brand colors
 
 ## ✨ Capabilities
 
-- **Workspaces:** List and inspect Fabric workspaces.
-- **Git Sync:** Trigger `updateFromGit` to pull changes from a connected branch (CI/CD).
-- **Report Generation:** Create new reports from pre-built `.pbip` templates.
-- **Theme Generator:** Dynamically create Power BI JSON themes based on brand colors.
-- **Dataset Refresh:** Trigger refreshes for Semantic Models.
+- **Workspace Management:** List and inspect all Fabric workspaces in your tenant
+- **Git Sync:** Trigger `updateFromGit` to deploy changes from connected Git branches (CI/CD)
+- **Theme Generator:** Dynamically create Power BI JSON themes from hex color codes
+- **Dataset Refresh:** Trigger refreshes for Semantic Models (datasets)
 
 ## 📦 Installation
 
@@ -35,15 +36,14 @@ pip install fabric-mcp-server-powerbi-creator
 
 ## 🚀 Quick Start
 
-### 1. Configuration (Interactive Login)
-Simply log in with the Azure CLI (no secrets required!):
+### 1. Configure Authentication
+
+**Option A: Azure CLI (Recommended for local development)**
 ```bash
 az login
 ```
-This automatically authenticates you as your user account.
 
-*(Optional) Service Principal (SPN):*
-For headless CI/CD pipelines, you can set environment variables:
+**Option B: Service Principal (For CI/CD)**
 ```bash
 export FABRIC_TENANT_ID="your-tenant-id"
 export FABRIC_CLIENT_ID="your-client-id"
@@ -51,17 +51,18 @@ export FABRIC_CLIENT_SECRET="your-client-secret"
 ```
 
 ### 2. Run the Server
+
 ```bash
-# Run with stdio transport (default for AI agents)
 fabric-mcp-server-powerbi-creator
 ```
 
-### 3. Connect to Claude Desktop / OpenClaw
-Add the server configuration to your agent's config file:
+### 3. Connect to Your AI Agent
+
+Add to Claude Desktop, Cline, or Cursor config:
 ```json
 {
   "mcpServers": {
-    "fabric-powerbi": {
+    "fabric": {
       "command": "fabric-mcp-server-powerbi-creator",
       "args": []
     }
@@ -71,22 +72,98 @@ Add the server configuration to your agent's config file:
 
 ## 🛠️ Available Tools
 
-| Tool | Description |
-|------|-------------|
-| `list_workspaces` | Lists all workspaces the user has access to. |
-| `sync_workspace` | Updates a workspace from its connected Git branch (Deploy). |
-| `list_templates` | Shows available report templates (e.g., Executive, Sales). |
-| `apply_template` | Creates a new report in a local directory using a template. |
-| `generate_theme` | Generates a Power BI theme JSON from hex codes. |
+| Tool | Description | Example Use |
+|------|-------------|-------------|
+| `list_workspaces` | Lists all Fabric workspaces you have access to | "Show me all my workspaces" |
+| `connect_workspace_to_git` | Connects a workspace to a Git repository for template/report syncing | "Connect my workspace to the PowerBI templates repo" |
+| `sync_workspace` | Triggers Git sync (updateFromGit) for a workspace | "Deploy the latest changes to Production workspace" |
+| `get_git_status` | Shows Git connection status and pending changes | "What's the Git status of my workspace?" |
+| `generate_theme` | Generates a Power BI theme JSON from hex colors | "Create a dark theme with cyan #00E5FF and purple #D500F9" |
+
+## 📖 Usage Examples
+
+### List Workspaces
+```
+User: "Show me all my Fabric workspaces"
+Agent: Calls list_workspaces() → Returns list with names, IDs, descriptions
+```
+
+### Connect Workspace to Git Repository
+```
+User: "Connect my workspace to the PowerBI templates repository"
+Agent: Calls connect_workspace_to_git()
+   - workspace_id: abc123
+   - git_provider: "GitHub"
+   - organization: "yourorg"
+   - repository: "powerbi-templates"
+   - branch: "main"
+Result: Workspace linked to Git repo
+```
+
+### Deploy Templates from Git  
+```
+User: "Deploy the sales dashboard template to my workspace"
+Agent: Calls sync_workspace(workspace_id)
+   → Triggers updateFromGit
+   → Sales dashboard appears in workspace
+```
+
+### Check Git Status
+```
+User: "What's the Git status of my workspace?"
+Agent: Calls get_git_status(workspace_id)
+   → Shows connected repo, branch, pending changes
+```
+
+### Generate connect` to link workspaces to Git repositories
+- Calls `git/updateFromGit` to sync content from Git
+- Calls `git/status` to check connection and changes
+- Enables GitOps-style deployments for Fabric workspaces
+
+**Template Workflow:**
+1. Store Power BI templates (`.pbip` format) in Git repository
+2. Connect Fabric workspace to Git repo using `connect_workspace_to_git()`
+3. Deploy templates using `sync_workspace()`
+4. Templates appear in workspace, ready to customize
+
+## 🧪 Testing
+
+See [test-templates/](test-templates/) folder for a sample Sales Dashboard template with dummy data.
+
+To test:
+1. Push `test-templates/` to a Git repository
+2. Use `connect_workspace_to_git()` to link your workspace
+3. Use `sync_workspace()` to deploy the template
+4. Verify the Sales Dashboard appears in your workspace
+User: "Create a dark Power BI theme with our brand colors: cyan #00E5FF and purple #D500F9"
+Agent: Calls generate_theme() → Returns theme JSON file
+```
 
 ## 🏗️ Architecture
 
 This server acts as a bridge between the **MCP Protocol** and the **Microsoft Fabric REST API**.
-It uses standard `git/updateFromGit` and `git/commitToGit` endpoints to ensure all changes are tracked and versioned.
+
+**Key Components:**
+- **fabric_api.py**: Wrapper for Fabric REST API calls (workspaces, Git operations)
+- **theme_generator.py**: Generates Power BI theme JSON files
+- **server.py**: MCP server exposing tools to AI agents
+
+**Authentication:**
+- Uses `azure-identity` with `DefaultAzureCredential`
+- Supports Azure CLI login (for interactive use)
+- Supports Service Principal (for CI/CD)
+
+**Git Integration:**
+- Calls `git/updateFromGit` endpoint to sync from connected Git repos
+- Enables GitOps-style deployments for Fabric workspaces
 
 ## 🤝 Contributing
 
-We welcome templates! If you have a great `.pbip` layout, submit a PR to `templates/`.
+Contributions welcome! Areas for improvement:
+- Additional Fabric API operations (dataset refresh, capacity management)
+- Support for commitToGit (push changes back to Git)
+- Enhanced error handling and retry logic
+- More theme customization options
 
 ## 📄 License
 MIT

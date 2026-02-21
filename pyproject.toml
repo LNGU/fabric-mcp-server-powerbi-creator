@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "fabric-mcp-server-powerbi-creator"
 version = "0.1.0"
-description = "MCP Server for Microsoft Fabric automation and Power BI report creation"
+description = "MCP server for Microsoft Fabric workspace management, Git-based deployments, and Power BI theme generation"
 dependencies = [
     "mcp-server-py",  # Assuming standard MCP SDK name
     "requests",

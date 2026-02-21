@@ -3,7 +3,8 @@
   "artifacts": [
     {
       "report": {
-        "path": "saas.Report"
+        "path": "SalesDashboard.Report",
+        "displayName": "Sales Dashboard"
       }
     }
   ],
