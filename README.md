@@ -74,9 +74,9 @@ Add the server configuration to your agent's config file:
 | Tool | Description |
 |------|-------------|
 | `list_workspaces` | Lists all workspaces the user has access to. |
-| `sync_from_git` | Updates a workspace from its connected Git branch (Deploy). |
+| `sync_workspace` | Updates a workspace from its connected Git branch (Deploy). |
 | `list_templates` | Shows available report templates (e.g., Executive, Sales). |
-| `apply_template` | Creates a new report in a workspace using a template. |
+| `apply_template` | Creates a new report in a local directory using a template. |
 | `generate_theme` | Generates a Power BI theme JSON from hex codes. |
 
 ## 🏗️ Architecture
