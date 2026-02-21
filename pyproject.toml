@@ -1,0 +1,16 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "fabric-mcp-server"
+version = "0.1.0"
+description = "MCP Server for Microsoft Fabric automation"
+dependencies = [
+    "mcp-server-py",  # Assuming standard MCP SDK name
+    "requests",
+    "pydantic"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fabric_mcp"]
