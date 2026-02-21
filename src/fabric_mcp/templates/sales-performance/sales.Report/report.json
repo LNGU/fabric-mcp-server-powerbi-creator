@@ -1,0 +1,12 @@
+{
+  "config": "{}",
+  "theme": "CY24SU02",
+  "sections": [
+    {
+      "name": "ReportSection1",
+      "displayName": "Sales Overview",
+      "filters": "[]",
+      "visualContainers": []
+    }
+  ]
+}

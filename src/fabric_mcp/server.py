@@ -52,10 +52,20 @@ async def list_templates() -> list[TextContent]:
     return [TextContent(type="text", text=str(t))]
 
 @server.tool()
-async def apply_template(template_name: str, workspace: str, report_name: str) -> TextContent:
-    """Create a new report using a template."""
-    result = templates.apply_template(template_name, workspace, report_name)
-    return TextContent(type="text", text=str(result))
+async def apply_template(template_name: str, destination_path: str, report_name: str) -> TextContent:
+    """
+    Create a new report in a local directory using a template.
+    
+    Args:
+        template_name: ID of the template to use (from list_templates)
+        destination_path: Local path to your Fabric Git repo
+        report_name: Name of the new report folder to create
+    """
+    try:
+        result = templates.apply_template(template_name, destination_path, report_name)
+        return TextContent(type="text", text=str(result))
+    except Exception as e:
+        return TextContent(type="text", text=f"Error applying template: {str(e)}")
 
 @server.tool()
 async def generate_theme(name: str, bg_color: str, text_color: str) -> TextContent:
