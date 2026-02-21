@@ -1,0 +1,41 @@
+{
+  "config": "{\"version\":\"5.51\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU02\",\"version\":\"5.51\",\"type\":\"Base\"}}}",
+  "sections": [
+    {
+      "name": "ExecSummary",
+      "displayName": "Executive Summary",
+      "width": 1280,
+      "height": 720,
+      "visualContainers": [
+        {
+          "x": 10,
+          "y": 10,
+          "width": 300,
+          "height": 150,
+          "config": "{\"name\":\"Card_TotalRevenue\",\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Sum(Revenue)\"}]}}}"
+        },
+        {
+          "x": 320,
+          "y": 10,
+          "width": 300,
+          "height": 150,
+          "config": "{\"name\":\"Card_NetProfit\",\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Sum(Profit)\"}]}}}"
+        },
+        {
+          "x": 630,
+          "y": 10,
+          "width": 300,
+          "height": 150,
+          "config": "{\"name\":\"Card_YoYGrowth\",\"singleVisual\":{\"visualType\":\"card\",\"projections\":{\"Values\":[{\"queryRef\":\"Avg(Growth)\"}]}}}"
+        },
+        {
+          "x": 10,
+          "y": 170,
+          "width": 1260,
+          "height": 500,
+          "config": "{\"name\":\"LineChart_RevenueTrend\",\"singleVisual\":{\"visualType\":\"lineChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Date.Month\"}],\"Y\":[{\"queryRef\":\"Sum(Revenue)\"}]}}}"
+        }
+      ]
+    }
+  ]
+}
