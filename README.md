@@ -1,34 +1,38 @@
-# Fabric MCP Server 🚀
+# Fabric MCP Server | PowerBI Report Creator🚀
 
-**Create Power BI reports by talking to AI — no manual clicking required.**
+**Skip the formula learning curve — let AI build your Power BI report structure.**
 
-A Model Context Protocol (MCP) server that lets AI agents deploy complete Power BI solutions to Microsoft Fabric. Skip the Power BI Desktop learning curve and describe what you want instead.
+A Model Context Protocol (MCP) server that lets AI agents deploy Power BI reports to Microsoft Fabric. Focus on what data you want to see, not how to write DAX or configure data sources.
 
 ## 💡 The Big Idea
 
-**Traditional workflow:** Open Power BI Desktop → Learn the interface → Click through menus → Build visuals → Configure data sources → Publish → Hope it works.
+**Traditional workflow:** Learn DAX formulas → Figure out data modeling → Create measures → Build visuals → Configure connections → Publish → Style it → Hope it works.
 
-**With this MCP server:** Tell your AI agent what you want → AI generates everything → Deploys directly to Fabric → Done.
+**With this MCP server:** Tell your AI what data you want to visualize → AI generates the semantic model, measures, and report structure → Deploys to Fabric → You apply final styling in Fabric portal.
 
 ### Why This Matters
 
-1. **Zero UI Required** — You never touch Power BI Desktop. The AI writes all the JSON/TMDL definitions.
-2. **Conversational Iteration** — Want to change the chart colors? Add a filter? Just say so.
-3. **Screenshot-to-Report** — Share a screenshot of a report you like, and AI will mimic the layout and style.
-4. **Full Automation** — From raw CSV to live dashboard in one conversation.
+1. **No DAX Required** — AI writes the measures and data model. You don't need to learn `SUM()`, `CALCULATE()`, or relationship syntax.
+2. **Quick Scaffolding** — Get a working report with the right visuals and data bindings in minutes, not hours.
+3. **Data Pipeline Automation** — CSV → Lakehouse → Delta Table → Semantic Model → Report, all automated.
+4. **Ready for Styling** — Visuals are deployed with correct data. Apply colors and formatting in Fabric portal.
 
-### Example Conversations
+### What You Get
 
 ```
-You: "Create a sales dashboard from this CSV with revenue by region and monthly trends"
-AI: [uploads data, creates model, builds report with bar chart + line chart, deploys to Fabric]
+You: "Create a sales report from this CSV with revenue by region and monthly trends"
+AI: [uploads data, creates semantic model with measures, builds report with charts]
 
-You: "Make it look like this" [attaches screenshot]
-AI: [adjusts colors, layout, adds similar visuals to match the screenshot]
-
-You: "Add a slicer for product category"
-AI: [adds slicer, redeploys]
+Result: Working report in Fabric with:
+  ✓ Data loaded into Lakehouse
+  ✓ Semantic model with correct measures (TotalRevenue, TotalProfit, etc.)
+  ✓ Visuals bound to the right fields
+  ✓ Ready for you to apply your preferred colors/theme in Fabric portal
 ```
+
+### Styling Limitations
+
+> **Note:** Programmatic visual styling (custom colors, fonts) via PBIR `objects` property is not currently supported by Fabric. Reports deploy with default Power BI styling. Use Fabric portal or Power BI Desktop to apply custom themes after deployment.
 
 ## 🔄 How It Works
 
@@ -187,31 +191,29 @@ AI: [uploads CSV → creates Delta table → builds semantic model →
 ```
 You: "I want my report to look like this:" [attaches screenshot of existing report]
 
-AI: "I can see a dark theme with card KPIs at top, donut chart on left, 
-     and trend line on right. I'll create something similar."
+AI: "I can see card KPIs at top, donut chart on left, and trend line on right. 
+     I'll create the data model and visuals with that layout."
 
-[AI analyzes the screenshot and generates visuals that mimic the layout, 
- colors, and chart types]
+[AI analyzes the screenshot and generates visuals that mimic the layout 
+ and chart types - with your actual data wired up automatically]
 
-"Deployed! Check Fabric to see the report."
-
-You: "The colors are too bright. Use #1a1a2e as background."
-
-AI: [regenerates theme, redeploys]
-
-"Updated with darker background."
+"Deployed! Check Fabric to see the report. You can apply colors and 
+ formatting in the Fabric portal."
 ```
 
 ### Pro Tip: Iterative Refinement
 
-The real power is **iteration**. Unlike manual Power BI work, you can rapidly experiment:
+The real power is **iteration on data and measures**. Rapidly experiment:
 
 - "Add a date slicer"
 - "Change the bar chart to horizontal"  
 - "Add a YoY growth measure"
-- "Make the fonts bigger"
+- "Filter to only show top 10 products"
 
-Each change: AI modifies the JSON → pushes to Git → syncs to Fabric → done.
+Each change: AI modifies the model/visuals → pushes to Git → syncs to Fabric → done.
+
+> **Note:** For visual styling (colors, fonts, custom formatting), use the Fabric portal 
+> after deployment. Programmatic styling via PBIR `objects` is not yet supported by Fabric.
 
 ---
 
