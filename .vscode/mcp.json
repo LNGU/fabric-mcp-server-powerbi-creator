@@ -1,0 +1,7 @@
+{
+  "servers": {
+    "fabric": {
+      "command": "c:/projects/fabric-mcp-server-powerbi-creator/.venv/Scripts/fabric-mcp-server-powerbi-creator.exe"
+    }
+  }
+}
